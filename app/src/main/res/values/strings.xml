@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Water Plants</string>
+    <string name="title_home">Home</string>
+    <string name="title_system">System</string>
+    <string name="title_schedule">Schedule</string>
+    <string name="title_plants">Plants</string>
+    <string name="title_test">Test</string>
+</resources>
