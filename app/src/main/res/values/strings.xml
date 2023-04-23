@@ -6,4 +6,12 @@
     <string name="title_plants">Plants</string>
     <string name="title_test">Test</string>
     <string name="button_connect">Connect</string>
+    <string name="system_hose">Hose</string>
+    <string name="system_next_watering">Next watering</string>
+    <string name="system_amount">Amount</string>
+    <string name="system_interval">Interval</string>
+    <string name="system_update">Ask for update</string>
+    <string name="system_empty">...</string>
+    <string name="system_receive">Receive updates</string>
+    <string name="system_water_level">Water level:</string>
 </resources>

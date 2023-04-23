@@ -8,18 +8,19 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.waterplants.databinding.ActivityMainBinding
+import com.example.waterplants.model.Model
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var myBluetooth: MyBluetooth
-
+    lateinit var model: Model
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         val navView: BottomNavigationView = binding.navView
 
@@ -35,6 +36,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        myBluetooth = MyBluetooth(this)
+        model = Model.getInstance(this)!!
     }
 }

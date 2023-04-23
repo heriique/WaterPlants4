@@ -1,4 +1,4 @@
-package com.example.waterplants
+package com.example.waterplants.model
 
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
