@@ -19,8 +19,7 @@ class Model private constructor(owner: AppCompatActivity) {
     //var systemPlant2 = Plant(5, null, null, null, null, null, null)
     //var systemPlant3 = Plant(6, null, null, null, null, null, null)
     //var systemPlants2 = arrayOf(systemPlant1, systemPlant2, systemPlant3)
-    var systemWaterLevel = MutableLiveData<String>()
-    var systemWaterLevel2 = MutableLiveData<Int?>()
+    var systemWaterLevel = MutableLiveData<Int?>()
 
     // Instance
     companion object {
@@ -79,8 +78,7 @@ class Model private constructor(owner: AppCompatActivity) {
                     systemPlantList[i].watered = ints[i * 5 + 4]
                 }
                 systemPlants.value = systemPlantList
-                systemWaterLevel.value = ints[15].toString()
-                systemWaterLevel2.value = ints[15]
+                systemWaterLevel.value = ints[15]
                 Log.d("jhgjgjhghjgjhgjh", "water lvl: " + ints[15].toString())
             }
         }

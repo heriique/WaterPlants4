@@ -60,7 +60,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/text_system_plant1"
+                android:id="@+id/text_system_hose1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -94,7 +94,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/text_system_plant2"
+                android:id="@+id/text_system_hose2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -128,7 +128,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/text_system_plant3"
+                android:id="@+id/text_system_hose3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

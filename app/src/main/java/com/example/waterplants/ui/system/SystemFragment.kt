@@ -30,11 +30,32 @@ class SystemFragment : Fragment() {
         _binding = FragmentSystemBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textViewWaterLevel: TextView = binding.textSystemWaterLevel
+        //Bind data fields to textViews
         systemViewModel.systemWaterLevel.observe(viewLifecycleOwner) {
-            textViewWaterLevel.text = "${getString(R.string.system_water_level)} $it"
+            binding.textSystemWaterLevel.text = "${getString(R.string.system_water_level)} $it"
         }
 
+        systemViewModel.systemPlants.observe(viewLifecycleOwner) {
+            binding.textSystemHose1.text = "${it[0].pin?.minus(3)}"
+        }
+        systemViewModel.systemPlants.observe(viewLifecycleOwner) {
+            binding.textSystemHose2.text = "${it[1].pin?.minus(3)}"
+        }
+        systemViewModel.systemPlants.observe(viewLifecycleOwner) {
+            binding.textSystemHose3.text = "${it[2].pin?.minus(3)}"
+        }
+
+        systemViewModel.systemPlants.observe(viewLifecycleOwner) {
+            binding.textSystemNext1.text = "${it[0].hourOfDay ?: getString(R.string.system_empty)}"
+        }
+        systemViewModel.systemPlants.observe(viewLifecycleOwner) {
+            binding.textSystemNext2.text = "${it[1].hourOfDay ?: getString(R.string.system_empty)}"
+        }
+        systemViewModel.systemPlants.observe(viewLifecycleOwner) {
+            binding.textSystemNext3.text = "${it[2].hourOfDay ?: getString(R.string.system_empty)}"
+        }
+
+        // Buttons
         val buttonUpdate: Button = binding.buttonSystemUpdate
         buttonUpdate.setOnClickListener { systemViewModel.askForSystemStatus() }
 

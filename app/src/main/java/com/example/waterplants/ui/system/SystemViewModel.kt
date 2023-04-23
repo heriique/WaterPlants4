@@ -5,14 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.example.waterplants.model.Model
+import com.example.waterplants.model.Plant
 
 class SystemViewModel : ViewModel() {
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is system Fragment"
-    }
-    val text: LiveData<String> = _text
-
-    val systemWaterLevel: LiveData<String> = Model.getInstance(null)?.systemWaterLevel!!
+    val systemWaterLevel: LiveData<Int?> = Model.getInstance(null)?.systemWaterLevel!!
+    val systemPlants: LiveData<List<Plant>> = Model.getInstance(null)?.systemPlants!!
 
     fun askForSystemStatus() {
         Model.getInstance(null)?.askForSystemStatus()
