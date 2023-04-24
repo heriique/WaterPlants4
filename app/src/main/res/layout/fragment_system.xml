@@ -53,6 +53,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/system_interval" />
+
+            <TextView
+                android:id="@+id/text_system_watered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/system_watered" />
         </TableRow>
 
         <TableRow
@@ -85,6 +91,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="@string/system_empty" />
+            <TextView
+                android:id="@+id/text_system_watered1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/system_empty" />
         </TableRow>
 
@@ -120,6 +131,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/system_empty" />
+
+            <TextView
+                android:id="@+id/text_system_watered2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/system_empty" />
         </TableRow>
 
 
@@ -153,6 +170,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="@string/system_empty" />
+
+            <TextView
+                android:id="@+id/text_system_watered3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/system_empty" />
         </TableRow>
 

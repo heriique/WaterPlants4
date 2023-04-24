@@ -14,4 +14,7 @@
     <string name="system_empty">...</string>
     <string name="system_receive">Receive updates</string>
     <string name="system_water_level">Water level:</string>
+    <string name="system_watered">Watered</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
