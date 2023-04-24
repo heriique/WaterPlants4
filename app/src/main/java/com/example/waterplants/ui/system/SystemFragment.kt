@@ -7,13 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
-import androidx.lifecycle.Observer
 import com.example.waterplants.R
 import com.example.waterplants.databinding.FragmentSystemBinding
 import java.time.Duration
 import java.time.Instant
-import java.time.temporal.TemporalAmount
 
 class SystemFragment : Fragment() {
 
@@ -49,17 +46,17 @@ class SystemFragment : Fragment() {
             binding.textSystemNext3.text = "${it[2].hourOfDay ?: getString(R.string.system_empty)}"*/
             if (it[0].hourOfDay == null || it[0].hourOfDay!! < 0
                 || it[0].hourOfDay!! > 23 || it[0].intervalDays == null) {
-                binding.textSystemNext1.text = "${getString(R.string.system_empty)}"
+                binding.textSystemNext1.text = getString(R.string.system_empty)
             } else {
                 val h : Int = it[0].hourOfDay!!
                 val d : Int = it[0].intervalDays!!
-                var now = Instant.now()
-                var hoursElapsed: Long = now.epochSecond / (60*60)
-                var daysElapsed: Long = hoursElapsed / 24
-                var cyclesElapsed: Long = daysElapsed / d
+                val now = Instant.now()
+                val hoursElapsed: Long = now.epochSecond / (60*60)
+                val daysElapsed: Long = hoursElapsed / 24
+                val cyclesElapsed: Long = daysElapsed / d
                 var daysToCycleStart: Long = cyclesElapsed * d
-                var daysIntoCycle: Long = daysElapsed % d
-                var hoursIntoDay: Long = hoursElapsed % 24
+                val daysIntoCycle: Long = daysElapsed % d
+                val hoursIntoDay: Long = hoursElapsed % 24
                 if (!(daysIntoCycle == 0L && hoursIntoDay < h)) {
                     daysToCycleStart += d
                 }
@@ -67,21 +64,22 @@ class SystemFragment : Fragment() {
                 val difference = Duration.between(now, next).toHours()
                 val days = difference / 24
                 val hours = difference % 24
-                binding.textSystemNext1.text = "$days days, $hours hours"
+                binding.textSystemNext1.text =
+                    "$days ${getString(R.string.system_days)}, $hours ${getString(R.string.system_hours)}"
             }
             if (it[1].hourOfDay == null || it[1].hourOfDay!! < 0
                 || it[1].hourOfDay!! > 23 || it[1].intervalDays == null) {
-                binding.textSystemNext2.text = "${getString(R.string.system_empty)}"
+                binding.textSystemNext2.text = getString(R.string.system_empty)
             } else {
                 val h : Int = it[1].hourOfDay!!
                 val d : Int = it[1].intervalDays!!
-                var now = Instant.now()
-                var hoursElapsed: Long = now.epochSecond / (60*60)
-                var daysElapsed: Long = hoursElapsed / 24
-                var cyclesElapsed: Long = daysElapsed / d
+                val now = Instant.now()
+                val hoursElapsed: Long = now.epochSecond / (60*60)
+                val daysElapsed: Long = hoursElapsed / 24
+                val cyclesElapsed: Long = daysElapsed / d
                 var daysToCycleStart: Long = cyclesElapsed * d
-                var daysIntoCycle: Long = daysElapsed % d
-                var hoursIntoDay: Long = hoursElapsed % 24
+                val daysIntoCycle: Long = daysElapsed % d
+                val hoursIntoDay: Long = hoursElapsed % 24
                 if (!(daysIntoCycle == 0L && hoursIntoDay < h)) {
                     daysToCycleStart += d
                 }
@@ -89,21 +87,22 @@ class SystemFragment : Fragment() {
                 val difference = Duration.between(now, next).toHours()
                 val days = difference / 24
                 val hours = difference % 24
-                binding.textSystemNext2.text = "$days days, $hours hours"
+                binding.textSystemNext2.text =
+                    "$days ${getString(R.string.system_days)}, $hours ${getString(R.string.system_hours)}"
             }
             if (it[2].hourOfDay == null || it[2].hourOfDay!! < 0
                 || it[2].hourOfDay!! > 23 || it[2].intervalDays == null) {
-                binding.textSystemNext3.text = "${getString(R.string.system_empty)}"
+                binding.textSystemNext3.text = getString(R.string.system_empty)
             } else {
                 val h : Int = it[2].hourOfDay!!
                 val d : Int = it[2].intervalDays!!
-                var now = Instant.now()
-                var hoursElapsed: Long = now.epochSecond / (60*60)
-                var daysElapsed: Long = hoursElapsed / 24
-                var cyclesElapsed: Long = daysElapsed / d
+                val now = Instant.now()
+                val hoursElapsed: Long = now.epochSecond / (60*60)
+                val daysElapsed: Long = hoursElapsed / 24
+                val cyclesElapsed: Long = daysElapsed / d
                 var daysToCycleStart: Long = cyclesElapsed * d
-                var daysIntoCycle: Long = daysElapsed % d
-                var hoursIntoDay: Long = hoursElapsed % 24
+                val daysIntoCycle: Long = daysElapsed % d
+                val hoursIntoDay: Long = hoursElapsed % 24
                 if (!(daysIntoCycle == 0L && hoursIntoDay < h)) {
                     daysToCycleStart += d
                 }
@@ -111,7 +110,8 @@ class SystemFragment : Fragment() {
                 val difference = Duration.between(now, next).toHours()
                 val days = difference / 24
                 val hours = difference % 24
-                binding.textSystemNext3.text = "$days days, $hours hours"
+                binding.textSystemNext3.text =
+                    "$days ${getString(R.string.system_days)}, $hours ${getString(R.string.system_hours)}"
             }
 
             binding.textSystemAmount1.text = "${it[0].amount ?: getString(R.string.system_empty)}"
@@ -123,30 +123,30 @@ class SystemFragment : Fragment() {
             binding.textSystemInterval3.text = "${it[2].intervalDays ?: getString(R.string.system_empty)}"
 
             if (it[0].watered == null) {
-                binding.textSystemWatered1.text = "${getString(R.string.system_empty)}"
+                binding.textSystemWatered1.text = getString(R.string.system_empty)
             } else {
                 if (it[0].watered!!) {
-                    binding.textSystemWatered1.text = "${getString(R.string.yes)}"
+                    binding.textSystemWatered1.text = getString(R.string.yes)
                 } else {
-                    binding.textSystemWatered1.text = "${getString(R.string.no)}"
+                    binding.textSystemWatered1.text = getString(R.string.no)
                 }
             }
             if (it[1].watered == null) {
-                binding.textSystemWatered2.text = "${getString(R.string.system_empty)}"
+                binding.textSystemWatered2.text = getString(R.string.system_empty)
             } else {
                 if (it[1].watered!!) {
-                    binding.textSystemWatered2.text = "${getString(R.string.yes)}"
+                    binding.textSystemWatered2.text = getString(R.string.yes)
                 } else {
-                    binding.textSystemWatered2.text = "${getString(R.string.no)}"
+                    binding.textSystemWatered2.text = getString(R.string.no)
                 }
             }
             if (it[2].watered == null) {
-                binding.textSystemWatered3.text = "${getString(R.string.system_empty)}"
+                binding.textSystemWatered3.text = getString(R.string.system_empty)
             } else {
                 if (it[2].watered!!) {
-                    binding.textSystemWatered3.text = "${getString(R.string.yes)}"
+                    binding.textSystemWatered3.text = getString(R.string.yes)
                 } else {
-                    binding.textSystemWatered3.text = "${getString(R.string.no)}"
+                    binding.textSystemWatered3.text = getString(R.string.no)
                 }
             }
         }

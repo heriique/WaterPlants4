@@ -17,4 +17,6 @@
     <string name="system_watered">Watered</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="system_days">days</string>
+    <string name="system_hours">hours</string>
 </resources>
