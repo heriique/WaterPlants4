@@ -60,7 +60,7 @@ class Model private constructor(owner: AppCompatActivity) {
             val strings = msg.substring(1).split(',')
 
             if (msg[0] == 'a') { // System is sending us its data
-                var ints: Array<Int>
+                val ints: Array<Int>
                 try {
                     ints = strings.map { it.toInt() }.toTypedArray()
                 }catch (e: java.lang.NumberFormatException) {
