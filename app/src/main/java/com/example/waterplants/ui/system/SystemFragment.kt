@@ -41,9 +41,6 @@ class SystemFragment : Fragment() {
             binding.textSystemHose2.text = "${it[1].pin?.minus(3)}"
             binding.textSystemHose3.text = "${it[2].pin?.minus(3)}"
 
-            /*binding.textSystemNext1.text = "${it[0].hourOfDay ?: getString(R.string.system_empty)}"
-            binding.textSystemNext2.text = "${it[1].hourOfDay ?: getString(R.string.system_empty)}"
-            binding.textSystemNext3.text = "${it[2].hourOfDay ?: getString(R.string.system_empty)}"*/
             if (it[0].hourOfDay == null || it[0].hourOfDay!! < 0
                 || it[0].hourOfDay!! > 23 || it[0].intervalDays == null) {
                 binding.textSystemNext1.text = getString(R.string.system_empty)
