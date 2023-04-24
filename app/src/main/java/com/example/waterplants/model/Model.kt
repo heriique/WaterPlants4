@@ -1,15 +1,11 @@
 package com.example.waterplants.model
 
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
-import java.time.Instant
 
 class Model private constructor(owner: AppCompatActivity) {
     var bluetooth: MyBluetooth
 
-    var instant: Instant = Instant.now()
     private val defaultPlant1= Plant(4,1, 4,12 ,false, "Daffodil", null)
     private val defaultPlant2= Plant(5,2, 4,12 ,true, "Lily", null)
     private val defaultPlant3= Plant(6,3, 4,12 ,false, "Rose", null)

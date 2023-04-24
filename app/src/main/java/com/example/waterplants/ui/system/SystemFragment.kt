@@ -115,9 +115,21 @@ class SystemFragment : Fragment() {
             binding.textSystemAmount2.text = "${it[1].amount ?: getString(R.string.system_empty)}"
             binding.textSystemAmount3.text = "${it[2].amount ?: getString(R.string.system_empty)}"
 
-            binding.textSystemInterval1.text = "${it[0].intervalDays ?: getString(R.string.system_empty)}"
-            binding.textSystemInterval2.text = "${it[1].intervalDays ?: getString(R.string.system_empty)}"
-            binding.textSystemInterval3.text = "${it[2].intervalDays ?: getString(R.string.system_empty)}"
+            if (it[0].intervalDays == null) {
+                binding.textSystemInterval1.text = getString(R.string.system_empty)
+            } else {
+                binding.textSystemInterval1.text = "${it[0].intervalDays} ${getString(R.string.system_days)}"
+            }
+            if (it[1].intervalDays == null) {
+                binding.textSystemInterval2.text = getString(R.string.system_empty)
+            } else {
+                binding.textSystemInterval2.text = "${it[1].intervalDays} ${getString(R.string.system_days)}"
+            }
+            if (it[2].intervalDays == null) {
+                binding.textSystemInterval3.text = getString(R.string.system_empty)
+            } else {
+                binding.textSystemInterval3.text = "${it[2].intervalDays} ${getString(R.string.system_days)}"
+            }
 
             if (it[0].watered == null) {
                 binding.textSystemWatered1.text = getString(R.string.system_empty)
@@ -154,7 +166,7 @@ class SystemFragment : Fragment() {
 
         val buttonReceive: Button = binding.buttonSystemReceive
         // pin, intervalDays, amount, nextHr, watered
-        buttonReceive.setOnClickListener { systemViewModel.processMessage("a4,3,20,11,0,5,7,30,12,1,6,7,40,13,1,50") }
+        buttonReceive.setOnClickListener { systemViewModel.processMessage("a4,3,20,11,0,5,1,30,23,1,6,7,40,13,1,50") }
         return root
     }
 
