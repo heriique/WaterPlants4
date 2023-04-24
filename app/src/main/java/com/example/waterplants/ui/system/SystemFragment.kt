@@ -36,7 +36,7 @@ class SystemFragment : Fragment() {
 
         //Bind data fields to textViews
         systemViewModel.systemWaterLevel.observe(viewLifecycleOwner) {
-            binding.textSystemWaterLevel.text = "${getString(R.string.system_water_level)} $it"
+            binding.textSystemWaterLevel.text = "${getString(R.string.system_water_level)} $it %"
         }
 
         systemViewModel.systemPlants.observe(viewLifecycleOwner) {
@@ -44,9 +44,9 @@ class SystemFragment : Fragment() {
             binding.textSystemHose2.text = "${it[1].pin?.minus(3)}"
             binding.textSystemHose3.text = "${it[2].pin?.minus(3)}"
 
-            binding.textSystemNext1.text = "${it[0].hourOfDay ?: getString(R.string.system_empty)}"
+            /*binding.textSystemNext1.text = "${it[0].hourOfDay ?: getString(R.string.system_empty)}"
             binding.textSystemNext2.text = "${it[1].hourOfDay ?: getString(R.string.system_empty)}"
-            binding.textSystemNext3.text = "${it[2].hourOfDay ?: getString(R.string.system_empty)}"
+            binding.textSystemNext3.text = "${it[2].hourOfDay ?: getString(R.string.system_empty)}"*/
             if (it[0].hourOfDay == null || it[0].hourOfDay!! < 0
                 || it[0].hourOfDay!! > 23 || it[0].intervalDays == null) {
                 binding.textSystemNext1.text = "${getString(R.string.system_empty)}"
@@ -54,26 +54,64 @@ class SystemFragment : Fragment() {
                 val h : Int = it[0].hourOfDay!!
                 val d : Int = it[0].intervalDays!!
                 var now = Instant.now()
-                //var daysElapsed: Long = now.epochSecond / (60*60*24)
                 var hoursElapsed: Long = now.epochSecond / (60*60)
                 var daysElapsed: Long = hoursElapsed / 24
                 var cyclesElapsed: Long = daysElapsed / d
                 var daysToCycleStart: Long = cyclesElapsed * d
-                //var hoursToCycleStart: Long = daysToCycleStart * 24
                 var daysIntoCycle: Long = daysElapsed % d
                 var hoursIntoDay: Long = hoursElapsed % 24
-                if (daysIntoCycle == 0L && hoursIntoDay < h) {
+                if (!(daysIntoCycle == 0L && hoursIntoDay < h)) {
                     daysToCycleStart += d
                 }
                 val next = Instant.ofEpochSecond((daysToCycleStart * 24 + h) * 60 * 60)
-                if (next < now)
-                    throw Exception("Duration error!")
                 val difference = Duration.between(now, next).toHours()
                 val days = difference / 24
                 val hours = difference % 24
-                if (days >= d)
-                    throw Exception("Wrong calculation of days!")
                 binding.textSystemNext1.text = "$days days, $hours hours"
+            }
+            if (it[1].hourOfDay == null || it[1].hourOfDay!! < 0
+                || it[1].hourOfDay!! > 23 || it[1].intervalDays == null) {
+                binding.textSystemNext2.text = "${getString(R.string.system_empty)}"
+            } else {
+                val h : Int = it[1].hourOfDay!!
+                val d : Int = it[1].intervalDays!!
+                var now = Instant.now()
+                var hoursElapsed: Long = now.epochSecond / (60*60)
+                var daysElapsed: Long = hoursElapsed / 24
+                var cyclesElapsed: Long = daysElapsed / d
+                var daysToCycleStart: Long = cyclesElapsed * d
+                var daysIntoCycle: Long = daysElapsed % d
+                var hoursIntoDay: Long = hoursElapsed % 24
+                if (!(daysIntoCycle == 0L && hoursIntoDay < h)) {
+                    daysToCycleStart += d
+                }
+                val next = Instant.ofEpochSecond((daysToCycleStart * 24 + h) * 60 * 60)
+                val difference = Duration.between(now, next).toHours()
+                val days = difference / 24
+                val hours = difference % 24
+                binding.textSystemNext2.text = "$days days, $hours hours"
+            }
+            if (it[2].hourOfDay == null || it[2].hourOfDay!! < 0
+                || it[2].hourOfDay!! > 23 || it[2].intervalDays == null) {
+                binding.textSystemNext3.text = "${getString(R.string.system_empty)}"
+            } else {
+                val h : Int = it[2].hourOfDay!!
+                val d : Int = it[2].intervalDays!!
+                var now = Instant.now()
+                var hoursElapsed: Long = now.epochSecond / (60*60)
+                var daysElapsed: Long = hoursElapsed / 24
+                var cyclesElapsed: Long = daysElapsed / d
+                var daysToCycleStart: Long = cyclesElapsed * d
+                var daysIntoCycle: Long = daysElapsed % d
+                var hoursIntoDay: Long = hoursElapsed % 24
+                if (!(daysIntoCycle == 0L && hoursIntoDay < h)) {
+                    daysToCycleStart += d
+                }
+                val next = Instant.ofEpochSecond((daysToCycleStart * 24 + h) * 60 * 60)
+                val difference = Duration.between(now, next).toHours()
+                val days = difference / 24
+                val hours = difference % 24
+                binding.textSystemNext3.text = "$days days, $hours hours"
             }
 
             binding.textSystemAmount1.text = "${it[0].amount ?: getString(R.string.system_empty)}"
