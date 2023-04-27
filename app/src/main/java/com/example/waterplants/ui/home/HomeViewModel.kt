@@ -8,7 +8,7 @@ import com.example.waterplants.model.Model
 class HomeViewModel: ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+        value = "Welcome to PlanteVanner 11000!"
     }
     val text: LiveData<String> = _text
 

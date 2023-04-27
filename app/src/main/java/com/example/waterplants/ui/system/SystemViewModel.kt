@@ -14,8 +14,4 @@ class SystemViewModel : ViewModel() {
     fun askForSystemStatus() {
         Model.getInstance(null)?.askForSystemStatus()
     }
-
-    fun processMessage(msg: String) {
-        Model.getInstance(null)?.processMessage(msg)
-    }
 }

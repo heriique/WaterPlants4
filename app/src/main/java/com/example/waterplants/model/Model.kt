@@ -1,10 +1,19 @@
 package com.example.waterplants.model
 
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 
 class Model private constructor(owner: AppCompatActivity) {
-    var bluetooth: MyBluetooth
+    private var _tag = Model::class.qualifiedName
+    private lateinit var _owner: AppCompatActivity
+
+    private val numPlantProperties = 5
+    private val numSystemPlants = 3
+    private val additionalProperties = 1 //water level
+    private val numSystemProperties = numPlantProperties * numSystemPlants + additionalProperties
+    private val systemHoseOffset = 4 // System hoses are numbered 4, 5, 6
 
     private val defaultPlant1= Plant(4,1, 4,12 ,false, "Daffodil", null)
     private val defaultPlant2= Plant(5,2, 4,12 ,true, "Lily", null)
@@ -20,6 +29,10 @@ class Model private constructor(owner: AppCompatActivity) {
 
     var systemWaterLevel = MutableLiveData<Int?>()
 
+    var bluetooth: MyBluetooth
+
+    private val messageThread = MessageThread()
+
     // Singleton instance
     companion object {
         @Volatile private var instance: Model? = null
@@ -29,14 +42,19 @@ class Model private constructor(owner: AppCompatActivity) {
         fun getInstance(owner: AppCompatActivity?) =
             instance ?: synchronized(this) { instance ?:
                 if (owner == null) null else
-                    Model(owner).also { instance = it }
+                    Model(owner).also {
+                        instance = it
+                        instance!!._owner = owner
+                    }
         }
     }
     init {
-        bluetooth = MyBluetooth(owner)
+        messageThread.start()
+        while (!messageThread.ready) {}
+        bluetooth = MyBluetooth(owner, messageThread.handler)
 
         for (i in 0..2)
-            systemPlantList.add(i, Plant(i + 4, null, null, null, null, null, null))
+            systemPlantList.add(i, Plant(i + systemHoseOffset, null, null, null, null, null, null))
         systemPlants.value = systemPlantList
         appPlantList.add(0, defaultPlant1)
         appPlantList.add(1, defaultPlant2)
@@ -44,29 +62,32 @@ class Model private constructor(owner: AppCompatActivity) {
         appPlants.value = appPlantList
     }
 
-    fun askForSystemStatus(): Boolean {
-        val r = getInstance(null)?.bluetooth?.writeData("a")
-        if (r == false || r == null)
-            return false
-        return true
+    fun askForSystemStatus() {
+        getInstance(null)?.bluetooth?.writeData("a")
     }
 
-    fun checkForMessage(): String {
-        return getInstance(null)?.bluetooth?.readData() ?: ""
+    fun processMessages(msg: String) {
+        val strings = msg.split('\n')
+        for (s in strings)
+            processMessage(s)
     }
 
-    fun processMessage(msg: String): Boolean {
+    private fun processMessage(msg: String): Boolean {
+        Log.d("Model", "Processing string: $msg")
         if (msg.isNotEmpty()) {
-            val strings = msg.substring(1).split(',')
+            val strings = msg.substring(1, msg.length - (if (msg.last() == '\n')  2 else 1)).split(',')
+            Log.d(_tag, "First char: ${msg[0]}")
 
-            if (msg[0] == 'a') { // System is sending us its data
+            // System is sending us its data
+            if (msg[0] == 'a') {
                 val ints: Array<Int>
                 try {
                     ints = strings.map { it.toInt() }.toTypedArray()
                 }catch (e: java.lang.NumberFormatException) {
+                    Log.d(_tag, "NumberFormatException while parsing string.")
                     return false
                 }
-                if (ints.size != 16)
+                if (ints.size != numSystemProperties)
                     return false
                 for (i in 0..2) {
                     if (systemPlantList[i].pin != ints[i * 5])
@@ -76,8 +97,17 @@ class Model private constructor(owner: AppCompatActivity) {
                     systemPlantList[i].hourOfDay = ints[i * 5 + 3]
                     systemPlantList[i].watered = ints[i * 5 + 4] != 0
                 }
-                systemPlants.value = systemPlantList
-                systemWaterLevel.value = ints[15]
+                systemPlants.postValue(systemPlantList)
+                systemWaterLevel.postValue(ints[15])
+
+            }
+            // System is sending a debug message
+            else if (msg[0] == 'd') {
+                Log.d(_tag, "Arduino message:\n${msg.substring(1)}")
+            }
+            // System is sending a message to display in app
+            else if (msg[0] == 'i') {
+                Toast.makeText(instance!!._owner, "${msg.substring(1)}",Toast.LENGTH_SHORT).show()
             }
         }
         return true

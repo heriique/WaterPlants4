@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.example.waterplants.R
 import com.example.waterplants.databinding.FragmentSystemBinding
+import com.example.waterplants.model.Model
 import java.time.Duration
 import java.time.Instant
 
@@ -160,13 +161,12 @@ class SystemFragment : Fragment() {
             }
         }
 
-        // Buttons
+        // Button
         val buttonUpdate: Button = binding.buttonSystemUpdate
-        buttonUpdate.setOnClickListener { systemViewModel.askForSystemStatus() }
+        buttonUpdate.setOnClickListener {
+            systemViewModel.askForSystemStatus()
+        }
 
-        val buttonReceive: Button = binding.buttonSystemReceive
-        // pin, intervalDays, amount, nextHr, watered
-        buttonReceive.setOnClickListener { systemViewModel.processMessage("a4,3,20,11,0,5,1,30,23,1,6,7,40,13,1,50") }
         return root
     }
 

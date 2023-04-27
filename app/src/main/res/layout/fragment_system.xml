@@ -18,7 +18,7 @@
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/button_system_update"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_system_water_level">
 
@@ -181,31 +181,15 @@
 
     </TableLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+
+    <Button
+        android:id="@+id/button_system_update"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginBottom="100dp"
+        android:text="@string/system_update"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tableLayout">
-
-        <Button
-            android:id="@+id/button_system_update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/system_update" />
-
-
-        <androidx.legacy.widget.Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/button_system_receive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/system_receive" />
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
