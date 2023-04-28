@@ -21,4 +21,8 @@
     <string name="system_hours">hours</string>
     <string name="connection_status">Connection status:</string>
     <string name="home_disconnect">Disconnect</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="grid_plant_image">Plant image</string>
 </resources>

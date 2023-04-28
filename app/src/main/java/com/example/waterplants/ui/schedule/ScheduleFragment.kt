@@ -1,9 +1,11 @@
 package com.example.waterplants.ui.schedule
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -28,9 +30,22 @@ class ScheduleFragment : Fragment() {
         _binding = FragmentScheduleBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSchedule
-        scheduleViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val buttonHose = arrayListOf<Button>()
+        buttonHose.add(binding.buttonHose1)
+        buttonHose.add(binding.buttonHose2)
+        buttonHose.add(binding.buttonHose3)
+        for (i in 0..2) {
+            buttonHose[i].setOnClickListener {
+                if (scheduleViewModel.selectedHose.value != i) {
+                    scheduleViewModel.selectedHose.value = i
+                    for (j in 0..2) {
+                        if (i == j)
+                            buttonHose[j].setBackgroundColor(Color.GREEN)
+                        else
+                            buttonHose[j].setBackgroundColor(Color.BLUE)
+                    }
+                }
+            }
         }
         return root
     }

@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
         buttonConnect.setOnClickListener { homeViewModel.connect() }
 
         // Image
-        val imageView: ImageView = binding.imageView
+        val imageView: ImageView = binding.imageGrid
         homeViewModel.isConnected.observe(viewLifecycleOwner) {
             if (it == false) {
                 imageView.setImageResource(R.drawable.baseline_bluetooth_disabled_24)

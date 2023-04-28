@@ -10,4 +10,6 @@ class ScheduleViewModel : ViewModel() {
         value = "This is schedule Fragment"
     }
     val text: LiveData<String> = _text
+
+    val selectedHose = MutableLiveData<Int>().apply { value = -1 }
 }
