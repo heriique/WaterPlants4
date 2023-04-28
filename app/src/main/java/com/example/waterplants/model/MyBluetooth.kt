@@ -22,9 +22,6 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
 
-const val MESSAGE_READ: Int = 0
-const val MESSAGE_WRITE: Int = 1
-const val MESSAGE_TOAST: Int = 2
 class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val handler: Handler) {
     private var bluetoothAdapter: BluetoothAdapter
     private lateinit var btSocket : BluetoothSocket
@@ -125,11 +122,15 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
 
     }
 
+    fun disconnect() {
+        ConnectedThread().cancel()
+    }
+
     // Old write function, do not use
     fun writeData2(data: String): Boolean {
         if (!isConnected.value!!)
             return false
-        var outStream: OutputStream
+        val outStream: OutputStream
         try {
             outStream = btSocket.outputStream
         } catch (e: IOException) {
@@ -151,6 +152,7 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
         ConnectedThread().write(data.toByteArray())
     }
 
+    // Old function, reading is done in ConnectedThread()
     fun readData(): String {
         if (!isConnected.value!!)
             return ""
@@ -166,7 +168,7 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
         try {
             while (inStream.available() > 0) {
                 // https://developer.android.com/reference/java/io/InputStream#read()
-                var c = inStream.read().toChar()
+                val c = inStream.read().toChar()
                 s += c
                 if (c == '\n')
                     break
@@ -175,8 +177,9 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
             Log.d(_tag, "Error while receiving stuff", e)
         } finally {
             Log.i(_tag, "INFO: Read string: $s")
-            return s
+
         }
+        return s
     }
 
     // https://developer.android.com/guide/topics/connectivity/bluetooth/transfer-data
@@ -196,7 +199,7 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
                     inStream.read(buffer)
                 } catch (e: IOException) {
                     Log.d(_tag, "Input stream was disconnected", e)
-                    _isConnected.value = false
+                    _isConnected.postValue(false)
                     break
                 }
 

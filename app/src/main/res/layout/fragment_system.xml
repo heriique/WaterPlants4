@@ -6,13 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".ui.system.SystemFragment">
 
-    <TextView
-        android:id="@+id/text_system_water_level"
+    <LinearLayout
+        android:id="@+id/layout_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/system_water_level"
+        android:layout_marginBottom="243dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/text_system_water_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:text="@string/system_water_level" />
+
+        <TextView
+            android:id="@+id/text_system_connection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="@string/connection_status" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="@string/connection_status"
+            android:src="@drawable/baseline_bluetooth_disabled_24"
+            android:scaleType="centerInside"/>
+    </LinearLayout>
 
     <TableLayout
         android:id="@+id/tableLayout"
@@ -20,7 +47,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/button_system_update"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_system_water_level">
+        app:layout_constraintTop_toBottomOf="@id/layout_linear">
 
         <TableRow
             android:layout_width="match_parent"
@@ -92,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/system_empty" />
+
             <TextView
                 android:id="@+id/text_system_watered1"
                 android:layout_width="wrap_content"
@@ -186,10 +214,12 @@
         android:id="@+id/button_system_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="81dp"
         android:layout_marginBottom="100dp"
         android:text="@string/system_update"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

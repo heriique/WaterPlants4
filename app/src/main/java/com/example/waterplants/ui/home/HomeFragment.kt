@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.waterplants.R
 import com.example.waterplants.databinding.FragmentHomeBinding
-import com.example.waterplants.model.Model
 
 class HomeFragment : Fragment() {
 
@@ -31,12 +31,25 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         val buttonConnect: Button = binding.buttonConnect
         buttonConnect.setOnClickListener { homeViewModel.connect() }
+
+        // Image
+        val imageView: ImageView = binding.imageView
+        homeViewModel.isConnected.observe(viewLifecycleOwner) {
+            if (it == false) {
+                imageView.setImageResource(R.drawable.baseline_bluetooth_disabled_24)
+                buttonConnect.setOnClickListener { homeViewModel.connect() }
+                buttonConnect.text = getString(R.string.home_connect)
+            }
+            else {
+                imageView.setImageResource(R.drawable.baseline_bluetooth_connected_24)
+                buttonConnect.setOnClickListener {homeViewModel.disconnect()}
+                buttonConnect.text = getString(R.string.home_disconnect)
+            }
+        }
+
+
         return root
     }
 

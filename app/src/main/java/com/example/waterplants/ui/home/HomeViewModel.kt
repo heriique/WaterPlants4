@@ -7,12 +7,13 @@ import com.example.waterplants.model.Model
 
 class HomeViewModel: ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "Welcome to PlanteVanner 11000!"
-    }
-    val text: LiveData<String> = _text
+    val isConnected: LiveData<Boolean> get() {return Model.getInstance(null)?.bluetooth?.isConnected ?: MutableLiveData(false) }
 
     fun connect() {
         Model.getInstance(null)?.bluetooth?.connect()
+    }
+
+    fun disconnect() {
+        Model.getInstance(null)?.bluetooth?.disconnect()
     }
 }

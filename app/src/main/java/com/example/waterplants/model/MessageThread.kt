@@ -6,9 +6,9 @@ import android.os.Message
 import android.util.Log
 
 object MessageType {
-    val READ = "MESSAGE_READ"
-    val WRITE = "MESSAGE_WRITE"
-    val TOAST = "MESSAGE_TOAST"
+    const val READ = "MESSAGE_READ"
+    const val WRITE = "MESSAGE_WRITE"
+    const val TOAST = "MESSAGE_TOAST"
 }
 
 class MessageThread: Thread() {
@@ -20,7 +20,7 @@ class MessageThread: Thread() {
         Looper.prepare()
         val looper = Looper.myLooper()
         if (looper != null) {
-            handler = object : Handler(looper!!) {
+            handler = object : Handler(looper) {
                 override fun handleMessage(msg: Message) {
                     val readString = msg.data.getString(MessageType.READ)
                     val writeString = msg.data.getString(MessageType.WRITE)

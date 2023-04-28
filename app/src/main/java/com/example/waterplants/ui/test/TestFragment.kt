@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.waterplants.databinding.FragmentTestBinding
-import com.example.waterplants.ui.system.SystemViewModel
 
 class TestFragment : Fragment() {
 

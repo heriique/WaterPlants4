@@ -95,6 +95,7 @@ class Model private constructor(owner: AppCompatActivity) {
                     systemPlantList[i].intervalDays = ints[i * 5 + 1]
                     systemPlantList[i].amount = ints[i * 5 + 2]
                     systemPlantList[i].hourOfDay = ints[i * 5 + 3]
+                    @Suppress("ControlFlowWithEmptyBody")
                     systemPlantList[i].watered = ints[i * 5 + 4] != 0
                 }
                 systemPlants.postValue(systemPlantList)
@@ -107,7 +108,7 @@ class Model private constructor(owner: AppCompatActivity) {
             }
             // System is sending a message to display in app
             else if (msg[0] == 'i') {
-                Toast.makeText(instance!!._owner, "${msg.substring(1)}",Toast.LENGTH_SHORT).show()
+                Toast.makeText(instance!!._owner, msg.substring(1),Toast.LENGTH_SHORT).show()
             }
         }
         return true

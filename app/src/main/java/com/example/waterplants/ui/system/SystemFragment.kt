@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import com.example.waterplants.R
 import com.example.waterplants.databinding.FragmentSystemBinding
 import com.example.waterplants.model.Model
@@ -165,6 +166,16 @@ class SystemFragment : Fragment() {
         val buttonUpdate: Button = binding.buttonSystemUpdate
         buttonUpdate.setOnClickListener {
             systemViewModel.askForSystemStatus()
+        }
+
+        // Image
+        val imageView: ImageView = binding.imageView
+        systemViewModel.isConnected.observe(viewLifecycleOwner) {
+            if (it == false)
+                imageView.setImageResource(R.drawable.baseline_bluetooth_disabled_24)
+
+            else
+                imageView.setImageResource(R.drawable.baseline_bluetooth_connected_24)
         }
 
         return root
