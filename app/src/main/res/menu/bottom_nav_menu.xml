@@ -8,17 +8,17 @@
 
     <item
         android:id="@+id/navigation_system"
-        android:icon="@android:drawable/ic_menu_preferences"
+        android:icon="@drawable/baseline_info_24"
         android:title="@string/title_system" />
 
     <item
         android:id="@+id/navigation_schedule"
-        android:icon="@android:drawable/ic_menu_recent_history"
+        android:icon="@drawable/baseline_alarm_24"
         android:title="@string/title_schedule" />
 
     <item
         android:id="@+id/navigation_plants"
-        android:icon="@android:drawable/ic_menu_gallery"
+        android:icon="@drawable/baseline_filter_vintage_24"
         android:title="@string/title_plants" />
 
     <item

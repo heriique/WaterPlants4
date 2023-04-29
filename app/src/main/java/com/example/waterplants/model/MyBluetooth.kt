@@ -86,9 +86,11 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             // We don't have permissions.
-            Toast.makeText(appCompatActivity.applicationContext, "BLUETOOTH_CONNECT permission is not granted! Please allow, and try again.",Toast.LENGTH_LONG).show()
+            Toast.makeText(appCompatActivity.applicationContext,
+                "BLUETOOTH_CONNECT permission is not granted! Please allow, and try again.",
+                Toast.LENGTH_LONG).show()
             requestBTPermissions()
-            _isConnected.value = false
+            _isConnected.postValue(false)
             return false
         }
         //Toast.makeText(appCompatActivity.applicationContext, "Connecting to ... ${device.name}\n mac: ${device.uuids[0]}\n address: ${device.address}", Toast.LENGTH_SHORT).show()
@@ -100,8 +102,9 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
             /* Here is the part the connection is made, by asking the device to create a RfcommSocket (Unsecure socket I guess), It map a port for us or something like that */
             btSocket.connect()
             Log.d(_tag, "Connection made.")
-            Toast.makeText(appCompatActivity.applicationContext, "Connection made.", Toast.LENGTH_SHORT).show()
-            _isConnected.value = true
+            Toast.makeText(appCompatActivity.applicationContext,
+                "Connection made.", Toast.LENGTH_SHORT).show()
+            _isConnected.postValue(true)
             ConnectedThread().start()
             return true
         } catch (e: IOException) {
@@ -109,14 +112,16 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
                 btSocket.close()
             } catch (e2: IOException) {
                 Log.d(_tag, "Unable to end the connection.\n" + e2.message)
-                Toast.makeText(appCompatActivity.applicationContext, "Unable to end the connection.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(appCompatActivity.applicationContext,
+                    "Unable to end the connection.", Toast.LENGTH_SHORT).show()
                 _isConnected.value = false
                 return false
             }
 
             Log.d(_tag, "Socket creation failed.\n" + e.message)
-            Toast.makeText(appCompatActivity.applicationContext, "Socket creation failed.", Toast.LENGTH_SHORT).show()
-            _isConnected.value = false
+            Toast.makeText(appCompatActivity.applicationContext,
+                "Socket creation failed.", Toast.LENGTH_SHORT).show()
+            _isConnected.postValue(false)
             return false
         }
 
@@ -177,7 +182,6 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
             Log.d(_tag, "Error while receiving stuff", e)
         } finally {
             Log.i(_tag, "INFO: Read string: $s")
-
         }
         return s
     }
@@ -205,7 +209,8 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
 
                 // Send the obtained bytes to the message handler.
                 val readMsg = handler.obtainMessage()
-                val bundle = Bundle().apply { putString(MessageType.READ, buffer.decodeToString(0, numBytes)) }
+                val bundle = Bundle().apply { putString(MessageType.READ,
+                    buffer.decodeToString(0, numBytes)) }
                 readMsg.data = bundle
                 readMsg.sendToTarget()
             }

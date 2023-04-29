@@ -27,6 +27,9 @@ class Model private constructor(owner: AppCompatActivity) {
     private var appPlantList = mutableListOf<Plant>()
     var appPlants = MutableLiveData<List<Plant>>()
 
+    private var appChosenPlantList = mutableListOf<Plant>()
+    var appChosenPlants = MutableLiveData<List<Plant>>()
+
     var systemWaterLevel = MutableLiveData<Int?>()
 
     var bluetooth: MyBluetooth
@@ -50,6 +53,7 @@ class Model private constructor(owner: AppCompatActivity) {
     }
     init {
         messageThread.start()
+        @Suppress("ControlFlowWithEmptyBody")
         while (!messageThread.ready) {}
         bluetooth = MyBluetooth(owner, messageThread.handler)
 
@@ -60,6 +64,15 @@ class Model private constructor(owner: AppCompatActivity) {
         appPlantList.add(1, defaultPlant2)
         appPlantList.add(2, defaultPlant3)
         appPlants.value = appPlantList
+
+        for (i in 0..2)
+            appChosenPlantList.add(appPlantList[(i+1)%3])
+        appChosenPlants.value = appChosenPlantList
+    }
+
+    fun select(hose: Int, plant: Int) {
+        appChosenPlantList[hose] = appPlantList[plant]
+        appChosenPlants.value = appChosenPlantList
     }
 
     fun askForSystemStatus() {
@@ -95,7 +108,6 @@ class Model private constructor(owner: AppCompatActivity) {
                     systemPlantList[i].intervalDays = ints[i * 5 + 1]
                     systemPlantList[i].amount = ints[i * 5 + 2]
                     systemPlantList[i].hourOfDay = ints[i * 5 + 3]
-                    @Suppress("ControlFlowWithEmptyBody")
                     systemPlantList[i].watered = ints[i * 5 + 4] != 0
                 }
                 systemPlants.postValue(systemPlantList)

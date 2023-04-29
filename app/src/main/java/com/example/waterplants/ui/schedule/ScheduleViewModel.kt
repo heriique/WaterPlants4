@@ -3,13 +3,14 @@ package com.example.waterplants.ui.schedule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.waterplants.model.Model
+import java.util.Collections
 
 class ScheduleViewModel : ViewModel() {
+    //var selectedHoseInt = 1
+    val selectedHose = MutableLiveData<Int>().apply { value = 0 }
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is schedule Fragment"
+    fun select(position: Int) {
+        Model.getInstance(null)?.select(selectedHose.value!!, position)
     }
-    val text: LiveData<String> = _text
-
-    val selectedHose = MutableLiveData<Int>().apply { value = -1 }
 }

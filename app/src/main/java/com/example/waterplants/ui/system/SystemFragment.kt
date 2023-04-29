@@ -170,12 +170,15 @@ class SystemFragment : Fragment() {
 
         // Image
         val imageView: ImageView = binding.imageGrid
-        systemViewModel.isConnected.observe(viewLifecycleOwner) {
-            if (it == false)
-                imageView.setImageResource(R.drawable.baseline_bluetooth_disabled_24)
 
-            else
+        systemViewModel.isConnected.observe(viewLifecycleOwner) {
+            buttonUpdate.isEnabled = it
+            if (it == false) {
+                imageView.setImageResource(R.drawable.baseline_bluetooth_disabled_24)
+            }
+            else {
                 imageView.setImageResource(R.drawable.baseline_bluetooth_connected_24)
+            }
         }
 
         return root
