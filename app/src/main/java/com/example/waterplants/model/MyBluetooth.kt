@@ -26,6 +26,12 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
     private var bluetoothAdapter: BluetoothAdapter
     private lateinit var btSocket : BluetoothSocket
 
+    private var _isConnected = MutableLiveData(false)
+    val isConnected : LiveData<Boolean>
+        get() {
+            return _isConnected
+        }
+
     // Serial port UUID
     // https://stackoverflow.com/questions/4632524/how-to-find-the-uuid-of-serial-port-bluetooth-device
     private val _myUUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
@@ -68,11 +74,7 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
         }
     }
 
-    private var _isConnected = MutableLiveData(false)
-    val isConnected : LiveData<Boolean>
-        get() {
-            return _isConnected
-        }
+
 
     fun connect(): Boolean {
         // Address discovered with 3rd party Bluetooth Scanner app
@@ -104,7 +106,7 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
             Log.d(_tag, "Connection made.")
             Toast.makeText(appCompatActivity.applicationContext,
                 "Connection made.", Toast.LENGTH_SHORT).show()
-            _isConnected.postValue(true)
+            _isConnected.value = true
             ConnectedThread().start()
             return true
         } catch (e: IOException) {

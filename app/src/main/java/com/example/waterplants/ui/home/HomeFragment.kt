@@ -32,23 +32,40 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         val buttonConnect: Button = binding.buttonConnect
-        buttonConnect.setOnClickListener { homeViewModel.connect() }
-
         // Image
         val imageView: ImageView = binding.imageGrid
-        homeViewModel.isConnected.observe(viewLifecycleOwner) {
-            if (it == false) {
-                imageView.setImageResource(R.drawable.baseline_bluetooth_disabled_24)
-                buttonConnect.setOnClickListener { homeViewModel.connect() }
-                buttonConnect.text = getString(R.string.home_connect)
+        buttonConnect.setOnClickListener {
+            if (homeViewModel.firstTime) {
+                homeViewModel.isConnected.observe(viewLifecycleOwner) {
+                    if (it == false) {
+                        imageView.setImageResource(R.drawable.baseline_bluetooth_disabled_24)
+                        buttonConnect.setOnClickListener { homeViewModel.connect() }
+                        buttonConnect.text = getString(R.string.home_connect)
+                    } else {
+                        imageView.setImageResource(R.drawable.baseline_bluetooth_connected_24)
+                        buttonConnect.setOnClickListener { homeViewModel.disconnect() }
+                        buttonConnect.text = getString(R.string.home_disconnect)
+                    }
+                }
             }
-            else {
-                imageView.setImageResource(R.drawable.baseline_bluetooth_connected_24)
-                buttonConnect.setOnClickListener {homeViewModel.disconnect()}
-                buttonConnect.text = getString(R.string.home_disconnect)
-            }
+            homeViewModel.firstTime = false
+            homeViewModel.connect()
         }
 
+        // Delay observing MyBluetooth until it has time to initialize
+        if (!homeViewModel.firstTime) {
+            homeViewModel.isConnected.observe(viewLifecycleOwner) {
+                if (it == false) {
+                    imageView.setImageResource(R.drawable.baseline_bluetooth_disabled_24)
+                    buttonConnect.setOnClickListener { homeViewModel.connect() }
+                    buttonConnect.text = getString(R.string.home_connect)
+                } else {
+                    imageView.setImageResource(R.drawable.baseline_bluetooth_connected_24)
+                    buttonConnect.setOnClickListener { homeViewModel.disconnect() }
+                    buttonConnect.text = getString(R.string.home_disconnect)
+                }
+            }
+        }
 
         return root
     }

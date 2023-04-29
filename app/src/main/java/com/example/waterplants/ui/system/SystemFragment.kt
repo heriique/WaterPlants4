@@ -38,128 +38,34 @@ class SystemFragment : Fragment() {
             binding.textSystemWaterLevel.text = "${getString(R.string.system_water_level)} $it %"
         }
 
-        systemViewModel.systemPlants.observe(viewLifecycleOwner) {
-            binding.textSystemHose1.text = "${it[0].pin?.minus(3)}"
-            binding.textSystemHose2.text = "${it[1].pin?.minus(3)}"
-            binding.textSystemHose3.text = "${it[2].pin?.minus(3)}"
+        systemViewModel.textSystemHose.observe(viewLifecycleOwner) {
+            binding.textSystemHose1.text = it[0]
+            binding.textSystemHose2.text = it[1]
+            binding.textSystemHose3.text = it[2]
+        }
 
-            if (it[0].hourOfDay == null || it[0].hourOfDay!! < 0
-                || it[0].hourOfDay!! > 23 || it[0].intervalDays == null) {
-                binding.textSystemNext1.text = getString(R.string.system_empty)
-            } else {
-                val h : Int = it[0].hourOfDay!!
-                val d : Int = it[0].intervalDays!!
-                val now = Instant.now()
-                val hoursElapsed: Long = now.epochSecond / (60*60)
-                val daysElapsed: Long = hoursElapsed / 24
-                val cyclesElapsed: Long = daysElapsed / d
-                var daysToCycleStart: Long = cyclesElapsed * d
-                val daysIntoCycle: Long = daysElapsed % d
-                val hoursIntoDay: Long = hoursElapsed % 24
-                if (!(daysIntoCycle == 0L && hoursIntoDay < h)) {
-                    daysToCycleStart += d
-                }
-                val next = Instant.ofEpochSecond((daysToCycleStart * 24 + h) * 60 * 60)
-                val difference = Duration.between(now, next).toHours()
-                val days = difference / 24
-                val hours = difference % 24
-                binding.textSystemNext1.text =
-                    "$days ${getString(R.string.system_days)}, $hours ${getString(R.string.system_hours)}"
-            }
-            if (it[1].hourOfDay == null || it[1].hourOfDay!! < 0
-                || it[1].hourOfDay!! > 23 || it[1].intervalDays == null) {
-                binding.textSystemNext2.text = getString(R.string.system_empty)
-            } else {
-                val h : Int = it[1].hourOfDay!!
-                val d : Int = it[1].intervalDays!!
-                val now = Instant.now()
-                val hoursElapsed: Long = now.epochSecond / (60*60)
-                val daysElapsed: Long = hoursElapsed / 24
-                val cyclesElapsed: Long = daysElapsed / d
-                var daysToCycleStart: Long = cyclesElapsed * d
-                val daysIntoCycle: Long = daysElapsed % d
-                val hoursIntoDay: Long = hoursElapsed % 24
-                if (!(daysIntoCycle == 0L && hoursIntoDay < h)) {
-                    daysToCycleStart += d
-                }
-                val next = Instant.ofEpochSecond((daysToCycleStart * 24 + h) * 60 * 60)
-                val difference = Duration.between(now, next).toHours()
-                val days = difference / 24
-                val hours = difference % 24
-                binding.textSystemNext2.text =
-                    "$days ${getString(R.string.system_days)}, $hours ${getString(R.string.system_hours)}"
-            }
-            if (it[2].hourOfDay == null || it[2].hourOfDay!! < 0
-                || it[2].hourOfDay!! > 23 || it[2].intervalDays == null) {
-                binding.textSystemNext3.text = getString(R.string.system_empty)
-            } else {
-                val h : Int = it[2].hourOfDay!!
-                val d : Int = it[2].intervalDays!!
-                val now = Instant.now()
-                val hoursElapsed: Long = now.epochSecond / (60*60)
-                val daysElapsed: Long = hoursElapsed / 24
-                val cyclesElapsed: Long = daysElapsed / d
-                var daysToCycleStart: Long = cyclesElapsed * d
-                val daysIntoCycle: Long = daysElapsed % d
-                val hoursIntoDay: Long = hoursElapsed % 24
-                if (!(daysIntoCycle == 0L && hoursIntoDay < h)) {
-                    daysToCycleStart += d
-                }
-                val next = Instant.ofEpochSecond((daysToCycleStart * 24 + h) * 60 * 60)
-                val difference = Duration.between(now, next).toHours()
-                val days = difference / 24
-                val hours = difference % 24
-                binding.textSystemNext3.text =
-                    "$days ${getString(R.string.system_days)}, $hours ${getString(R.string.system_hours)}"
-            }
+        systemViewModel.textSystemNext.observe(viewLifecycleOwner) {
+            binding.textSystemNext1.text = it[0]
+            binding.textSystemNext2.text = it[1]
+            binding.textSystemNext3.text = it[2]
+        }
 
-            binding.textSystemAmount1.text = "${it[0].amount ?: getString(R.string.system_empty)}"
-            binding.textSystemAmount2.text = "${it[1].amount ?: getString(R.string.system_empty)}"
-            binding.textSystemAmount3.text = "${it[2].amount ?: getString(R.string.system_empty)}"
+        systemViewModel.textSystemAmount.observe(viewLifecycleOwner) {
+            binding.textSystemAmount1.text = it[0]
+            binding.textSystemAmount2.text = it[1]
+            binding.textSystemAmount3.text = it[2]
+        }
 
-            if (it[0].intervalDays == null) {
-                binding.textSystemInterval1.text = getString(R.string.system_empty)
-            } else {
-                binding.textSystemInterval1.text = "${it[0].intervalDays} ${getString(R.string.system_days)}"
-            }
-            if (it[1].intervalDays == null) {
-                binding.textSystemInterval2.text = getString(R.string.system_empty)
-            } else {
-                binding.textSystemInterval2.text = "${it[1].intervalDays} ${getString(R.string.system_days)}"
-            }
-            if (it[2].intervalDays == null) {
-                binding.textSystemInterval3.text = getString(R.string.system_empty)
-            } else {
-                binding.textSystemInterval3.text = "${it[2].intervalDays} ${getString(R.string.system_days)}"
-            }
+        systemViewModel.textSystemInterval.observe(viewLifecycleOwner) {
+            binding.textSystemInterval1.text = it[0]
+            binding.textSystemInterval2.text = it[1]
+            binding.textSystemInterval3.text = it[2]
+        }
 
-            if (it[0].watered == null) {
-                binding.textSystemWatered1.text = getString(R.string.system_empty)
-            } else {
-                if (it[0].watered!!) {
-                    binding.textSystemWatered1.text = getString(R.string.yes)
-                } else {
-                    binding.textSystemWatered1.text = getString(R.string.no)
-                }
-            }
-            if (it[1].watered == null) {
-                binding.textSystemWatered2.text = getString(R.string.system_empty)
-            } else {
-                if (it[1].watered!!) {
-                    binding.textSystemWatered2.text = getString(R.string.yes)
-                } else {
-                    binding.textSystemWatered2.text = getString(R.string.no)
-                }
-            }
-            if (it[2].watered == null) {
-                binding.textSystemWatered3.text = getString(R.string.system_empty)
-            } else {
-                if (it[2].watered!!) {
-                    binding.textSystemWatered3.text = getString(R.string.yes)
-                } else {
-                    binding.textSystemWatered3.text = getString(R.string.no)
-                }
-            }
+        systemViewModel.textSystemWatered.observe(viewLifecycleOwner) {
+            binding.textSystemWatered1.text = it[0]
+            binding.textSystemWatered2.text = it[1]
+            binding.textSystemWatered3.text = it[2]
         }
 
         // Button

@@ -34,7 +34,7 @@ class Model private constructor(owner: AppCompatActivity) {
 
     var bluetooth: MyBluetooth
 
-    private val messageThread = MessageThread()
+    private val messageThread = MessageThread().apply { start() }
 
     // Singleton instance
     companion object {
@@ -52,7 +52,6 @@ class Model private constructor(owner: AppCompatActivity) {
         }
     }
     init {
-        messageThread.start()
         @Suppress("ControlFlowWithEmptyBody")
         while (!messageThread.ready) {}
         bluetooth = MyBluetooth(owner, messageThread.handler)
