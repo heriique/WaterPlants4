@@ -67,6 +67,10 @@ class ScheduleFragment : Fragment() {
         }
         buttonHose[0].setBackgroundColor(Color.GREEN)
 
+        binding.buttonScheduleSend.setOnClickListener {
+            scheduleViewModel.write()
+        }
+
         return root
     }
 

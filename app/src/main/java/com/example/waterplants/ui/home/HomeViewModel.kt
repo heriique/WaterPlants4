@@ -11,7 +11,7 @@ class HomeViewModel: ViewModel() {
     var firstTime = true
 
     fun connect() {
-        Model.getInstance(null)?.bluetooth?.connect()
+        Model.getInstance(null)?.bluetooth?.scanAndConnect()
     }
 
     fun disconnect() {

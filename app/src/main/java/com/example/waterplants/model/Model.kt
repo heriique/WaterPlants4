@@ -3,6 +3,7 @@ package com.example.waterplants.model
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.AnyRes
@@ -48,7 +49,7 @@ class Model private constructor(owner: AppCompatActivity) {
     private var _pickedImageUri = MutableLiveData<Uri?>(null)
     val pickedImageUri: LiveData<Uri?> get() = _pickedImageUri
 
-    private val messageThread = MessageThread().apply { start() }
+    private val messageThread = MessageThread(owner).apply { start() }
 
     // Singleton instance
     companion object {
@@ -84,12 +85,6 @@ class Model private constructor(owner: AppCompatActivity) {
 
 
     }
-
-    /*fun pickImageSetup() {
-        _pickedImageUriDefault =
-            getUriToDrawable(_owner.applicationContext, R.drawable.baseline_add_a_photo_24)
-        _pickedImageUri = MutableLiveData(_pickedImageUriDefault)
-    }*/
 
     fun getHandler(): android.os.Handler {
         return messageThread.handler
@@ -157,7 +152,8 @@ class Model private constructor(owner: AppCompatActivity) {
             }
             // System is sending a message to display in app
             else if (msg[0] == 'i') {
-                Toast.makeText(instance!!._owner, msg.substring(1),Toast.LENGTH_SHORT).show()
+                //Toast.makeText(instance!!._owner, msg.substring(1),Toast.LENGTH_SHORT).show()
+                MessageThread.postMessage(msg.substring(1), MessageType.TOAST, messageThread.handler)
             }
         }
         return true
