@@ -9,11 +9,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_marginBottom="65dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="409dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:orientation="horizontal">
 
@@ -48,13 +50,33 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/_3" />
+
+            <ImageView
+                android:id="@+id/image_schedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/connection_status"
+                android:scaleType="centerInside"
+                android:src="@drawable/baseline_bluetooth_disabled_24" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/button_schedule_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:text="@string/schedule_send" />
+
         <GridView
-            android:id="@+id/gridView"
+            android:id="@+id/gridView_schedule"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:numColumns="2" />
+            android:numColumns="2">
+
+        </GridView>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

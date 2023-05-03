@@ -1,5 +1,6 @@
 package com.example.waterplants.ui.system
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,9 +11,6 @@ import android.widget.Button
 import android.widget.ImageView
 import com.example.waterplants.R
 import com.example.waterplants.databinding.FragmentSystemBinding
-import com.example.waterplants.model.Model
-import java.time.Duration
-import java.time.Instant
 
 class SystemFragment : Fragment() {
 
@@ -28,13 +26,14 @@ class SystemFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val systemViewModel =
-            ViewModelProvider(this).get(SystemViewModel::class.java)
+            ViewModelProvider(this)[SystemViewModel::class.java]
 
         _binding = FragmentSystemBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         //Bind data fields to textViews
         systemViewModel.systemWaterLevel.observe(viewLifecycleOwner) {
+            @SuppressLint("SetTextI18n")
             binding.textSystemWaterLevel.text = "${getString(R.string.system_water_level)} $it %"
         }
 

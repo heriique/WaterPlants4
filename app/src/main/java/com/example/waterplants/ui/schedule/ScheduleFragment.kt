@@ -1,18 +1,14 @@
 package com.example.waterplants.ui.schedule
 
-import android.content.res.Resources
-import android.content.res.Resources.Theme
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.waterplants.R
 import com.example.waterplants.databinding.FragmentScheduleBinding
 import com.example.waterplants.model.Model
 
@@ -37,7 +33,7 @@ class ScheduleFragment : Fragment() {
 
 
 
-        val gridView = binding.gridView
+        val gridView = binding.gridViewSchedule
         val tileAdapter = TileAdapter(this.requireContext(), Model.getInstance(null)!!.appPlants,
             Model.getInstance(null)!!.appChosenPlants, scheduleViewModel.selectedHose)
         gridView.adapter = tileAdapter

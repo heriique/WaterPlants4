@@ -1,9 +1,17 @@
 package com.example.waterplants.model
 
+import android.content.ContentResolver
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.AnyRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.waterplants.MainActivity
+import com.example.waterplants.R
+
 
 class Model private constructor(owner: AppCompatActivity) {
     private var _tag = Model::class.qualifiedName
@@ -15,9 +23,12 @@ class Model private constructor(owner: AppCompatActivity) {
     private val numSystemProperties = numPlantProperties * numSystemPlants + additionalProperties
     private val systemHoseOffset = 4 // System hoses are numbered 4, 5, 6
 
-    private val defaultPlant1= Plant(4,1, 4,12 ,false, "Daffodil", null)
-    private val defaultPlant2= Plant(5,2, 4,12 ,true, "Lily", null)
-    private val defaultPlant3= Plant(6,3, 4,12 ,false, "Rose", null)
+    private val defaultPlant1= Plant(4,7, 80,20,false,
+        "Dracaenas", getUriToDrawable(owner.applicationContext, R.drawable.dracaenas))
+    private val defaultPlant2= Plant(5,3, 30,20,false,
+        "Fredslilje", getUriToDrawable(owner.applicationContext, R.drawable.fredslilje))
+    private val defaultPlant3= Plant(6,9, 100,20,false,
+        "Sansevieria", getUriToDrawable(owner.applicationContext, R.drawable.sansevieria))
 
     // Copy of plants stored on the Arduino
     private var systemPlantList = mutableListOf<Plant>()
@@ -33,6 +44,9 @@ class Model private constructor(owner: AppCompatActivity) {
     var systemWaterLevel = MutableLiveData<Int?>()
 
     var bluetooth: MyBluetooth
+
+    private var _pickedImageUri = MutableLiveData<Uri?>(null)
+    val pickedImageUri: LiveData<Uri?> get() = _pickedImageUri
 
     private val messageThread = MessageThread().apply { start() }
 
@@ -67,6 +81,30 @@ class Model private constructor(owner: AppCompatActivity) {
         for (i in 0..2)
             appChosenPlantList.add(appPlantList[(i+1)%3])
         appChosenPlants.value = appChosenPlantList
+
+
+    }
+
+    /*fun pickImageSetup() {
+        _pickedImageUriDefault =
+            getUriToDrawable(_owner.applicationContext, R.drawable.baseline_add_a_photo_24)
+        _pickedImageUri = MutableLiveData(_pickedImageUriDefault)
+    }*/
+
+    fun getHandler(): android.os.Handler {
+        return messageThread.handler
+    }
+
+    fun pickImage() {
+        (_owner as MainActivity).pickImage()
+    }
+
+    fun setPickedImage(uri: Uri?) {
+        _pickedImageUri.postValue(uri)
+    }
+
+    fun addPlant(p: Plant) {
+        appPlantList.add(p)
     }
 
     fun select(hose: Int, plant: Int) {
@@ -124,4 +162,23 @@ class Model private constructor(owner: AppCompatActivity) {
         }
         return true
     }
+}
+
+// https://stackoverflow.com/questions/6602417/get-the-uri-of-an-image-stored-in-drawable
+/**
+ * get uri to drawable or any other resource type if u wish
+ * @param context - context
+ * @param drawableId - drawable res id
+ * @return - uri
+ */
+fun getUriToDrawable(
+    context: Context,
+    @AnyRes drawableId: Int
+): Uri {
+    return Uri.parse(
+        ContentResolver.SCHEME_ANDROID_RESOURCE
+                + "://" + context.resources.getResourcePackageName(drawableId)
+                + '/' + context.resources.getResourceTypeName(drawableId)
+                + '/' + context.resources.getResourceEntryName(drawableId)
+    )
 }

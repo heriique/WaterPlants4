@@ -1,4 +1,4 @@
-package com.example.waterplants.ui.schedule
+package com.example.waterplants.ui.plants
 
 import android.app.Activity
 import android.content.Context
@@ -11,19 +11,16 @@ import androidx.lifecycle.LiveData
 import com.example.waterplants.R
 import com.example.waterplants.model.Plant
 
-/**
- * Adapter class to show a grid of tiles with a plant image and text below it
- * Reference:
- * https://medium.com/@hasperong/custom-gridview-image-and-text-using-kotlin-e7feb0b0189c
- */
-class TileAdapter(var context: Context,
-                  private var plants: LiveData<List<Plant>>,
-                  private var chosenPlants: LiveData<List<Plant>>, private var selectedHose: LiveData<Int>) : BaseAdapter() {
+class TileAdapter2(var context: Context, private var plants: LiveData<List<Plant>>,
+                   private var selectedPlant: LiveData<Int>
+) : BaseAdapter() {
     override fun getCount(): Int {
-        return plants.value!!.size
+        return plants.value!!.size + 1 // add new item
     }
 
     override fun getItem(position: Int): Any {
+        if (position == plants.value!!.size)
+            return Plant(null, null, null, null, null, "New Plant...", null)
         return (plants.value!![position])
     }
 
@@ -36,24 +33,29 @@ class TileAdapter(var context: Context,
         val holder: ViewHolder
         if (myView == null) {
             val inflater = (context as Activity).layoutInflater
-            myView = inflater.inflate(R.layout.grid_item, parent, false)
+            myView = inflater.inflate(R.layout.grid_item2, parent, false)
             holder = ViewHolder()
-            holder.imageView = myView!!.findViewById(R.id.image_grid) as ImageView
-            holder.textView = myView.findViewById(R.id.text_grid) as TextView
+            holder.imageView = myView!!.findViewById(R.id.image_grid2) as ImageView
+            holder.textView = myView.findViewById(R.id.text_grid2) as TextView
             myView.tag = holder
         }
         else {
             holder = myView.tag as ViewHolder
         }
         holder.imageView!!.setImageResource(R.drawable.baseline_image_not_supported_24)
-        val uri = plants.value?.get(position)?.imageUri
-        if (uri != null)
-            holder.imageView!!.setImageURI(uri)
-        if (chosenPlants.value!![selectedHose.value!!] == plants.value?.get(position))
+        if (position < plants.value!!.size) {
+            val uri = plants.value?.get(position)?.imageUri
+            if (uri != null)
+                holder.imageView!!.setImageURI(uri)
+        }
+        if (selectedPlant.value == position)
             myView.setBackgroundResource(R.drawable.border)
         else
             myView.setBackgroundResource(0)
+        if (position < plants.value!!.size)
         holder.textView!!.text = plants.value?.get(position)?.name ?: "No name"
+        else
+            holder.textView!!.text = "New Plant"
         return myView
     }
     class ViewHolder {
@@ -62,4 +64,3 @@ class TileAdapter(var context: Context,
     }
 
 }
-

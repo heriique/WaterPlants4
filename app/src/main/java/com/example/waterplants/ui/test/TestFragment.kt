@@ -23,7 +23,7 @@ class TestFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val testViewModel =
-            ViewModelProvider(this).get(TestViewModel::class.java)
+            ViewModelProvider(this)[TestViewModel::class.java]
 
         _binding = FragmentTestBinding.inflate(inflater, container, false)
         val root: View = binding.root

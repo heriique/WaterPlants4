@@ -26,4 +26,13 @@
     <string name="_3">3</string>
     <string name="grid_plant_image">Plant image</string>
     <string name="schedule_hose">Hose:</string>
+    <string name="plants_name">Name:</string>
+    <string name="plants_empty">...</string>
+    <string name="plants_image">Image:</string>
+    <string name="plants_image_placeholder">Plant Image</string>
+    <string name="plants_interval">Interval (days):</string>
+    <string name="plants_time">Time of day (0-23):</string>
+    <string name="plants_amount">Amount (mL):</string>
+    <string name="plants_save">Save</string>
+    <string name="schedule_send">Send To System</string>
 </resources>

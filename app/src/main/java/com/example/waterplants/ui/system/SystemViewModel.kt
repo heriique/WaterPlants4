@@ -1,12 +1,7 @@
 package com.example.waterplants.ui.system
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
+import androidx.lifecycle.*
 import com.example.waterplants.R
 import com.example.waterplants.model.Model
 import com.example.waterplants.model.Plant
@@ -15,19 +10,14 @@ import java.time.Instant
 
 class SystemViewModel(application: Application) : AndroidViewModel(application) {
     val systemWaterLevel: LiveData<Int?> = Model.getInstance(null)?.systemWaterLevel!!
-    val systemPlants: LiveData<List<Plant>> = Model.getInstance(null)?.systemPlants!!
+    private val systemPlants: LiveData<List<Plant>> = Model.getInstance(null)?.systemPlants!!
     val isConnected: LiveData<Boolean> get() {return Model.getInstance(null)?.bluetooth?.isConnected ?: MutableLiveData(false) }
 
-    val textSystemHose: LiveData<List<String>> =
-        Transformations.map(systemPlants, this::hoseToString)
-    val textSystemNext: LiveData<List<String>> =
-        Transformations.map(systemPlants, this:: nextToString)
-    val textSystemAmount: LiveData<List<String>> =
-        Transformations.map(systemPlants, this::amountToString)
-    val textSystemInterval: LiveData<List<String>> =
-        Transformations.map(systemPlants, this::intervalToString)
-    val textSystemWatered: LiveData<List<String>> =
-        Transformations.map(systemPlants, this::wateredToString)
+    val textSystemHose: LiveData<List<String>> = systemPlants.map { hoseToString(systemPlants.value!!) }
+    val textSystemNext: LiveData<List<String>> = systemPlants.map { nextToString(systemPlants.value!!) }
+    val textSystemAmount: LiveData<List<String>> = systemPlants.map { amountToString(systemPlants.value!!) }
+    val textSystemInterval: LiveData<List<String>> = systemPlants.map {intervalToString(systemPlants.value!!)}
+    val textSystemWatered: LiveData<List<String>> = systemPlants.map { wateredToString(systemPlants.value!!) }
 
     private fun getString(r: Int): String {
         return getApplication<Application>().resources.getString(r)

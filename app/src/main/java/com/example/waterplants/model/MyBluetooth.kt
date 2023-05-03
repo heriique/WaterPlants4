@@ -42,7 +42,8 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
     // ActivityResultLauncher for requesting BT permissions with API < 33
     private var requestBluetooth = appCompatActivity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == AppCompatActivity.RESULT_OK) {
-            //granted
+            Toast.makeText(appCompatActivity.applicationContext,
+                "Permission to connect is granted!", Toast.LENGTH_SHORT).show()
         }else{
             //deny
         }
@@ -188,6 +189,16 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
         return s
     }
 
+    fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            connect()
+        }
+    }
+
     // https://developer.android.com/guide/topics/connectivity/bluetooth/transfer-data
     // Inner class is static
     private inner class ConnectedThread : Thread() {
@@ -252,4 +263,5 @@ class MyBluetooth(private val appCompatActivity: AppCompatActivity, private val 
             }
         }
     }
+
 }
