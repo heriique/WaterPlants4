@@ -35,4 +35,7 @@
     <string name="plants_amount">Amount (mL):</string>
     <string name="plants_save">Save</string>
     <string name="schedule_send">Send To System</string>
+    <string name="system_1">1</string>
+    <string name="system_2">2</string>
+    <string name="system_3">3</string>
 </resources>

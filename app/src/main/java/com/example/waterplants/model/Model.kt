@@ -3,9 +3,7 @@ package com.example.waterplants.model
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import android.os.Handler
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.AnyRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
@@ -24,11 +22,11 @@ class Model private constructor(owner: AppCompatActivity) {
     private val numSystemProperties = numPlantProperties * numSystemPlants + additionalProperties
     private val systemHoseOffset = 4 // System hoses are numbered 4, 5, 6
 
-    private val defaultPlant1= Plant(4,7, 80,20,false,
+    private val defaultPlant1= Plant(7, 80,20,false,
         "Dracaenas", getUriToDrawable(owner.applicationContext, R.drawable.dracaenas))
-    private val defaultPlant2= Plant(5,3, 30,20,false,
+    private val defaultPlant2= Plant(3, 30,20,false,
         "Fredslilje", getUriToDrawable(owner.applicationContext, R.drawable.fredslilje))
-    private val defaultPlant3= Plant(6,9, 100,20,false,
+    private val defaultPlant3= Plant(9, 100,20,false,
         "Sansevieria", getUriToDrawable(owner.applicationContext, R.drawable.sansevieria))
 
     // Copy of plants stored on the Arduino
@@ -72,7 +70,7 @@ class Model private constructor(owner: AppCompatActivity) {
         bluetooth = MyBluetooth(owner, messageThread.handler)
 
         for (i in 0..2)
-            systemPlantList.add(i, Plant(i + systemHoseOffset, null, null, null, null, null, null))
+            systemPlantList.add(i, Plant(null, null, null, null, null, null))
         systemPlants.value = systemPlantList
         appPlantList.add(0, defaultPlant1)
         appPlantList.add(1, defaultPlant2)
@@ -86,7 +84,7 @@ class Model private constructor(owner: AppCompatActivity) {
 
     }
 
-    fun getHandler(): android.os.Handler {
+    fun getMessageHandler(): android.os.Handler {
         return messageThread.handler
     }
 
@@ -108,7 +106,8 @@ class Model private constructor(owner: AppCompatActivity) {
     }
 
     fun askForSystemStatus() {
-        getInstance(null)?.bluetooth?.writeData("a")
+        //getInstance(null)?.bluetooth?.writeData("a\n")
+        MessageThread.postMessage("a\n", MessageType.WRITE, messageThread.handler)
     }
 
     fun processMessages(msg: String) {
@@ -117,10 +116,11 @@ class Model private constructor(owner: AppCompatActivity) {
             processMessage(s)
     }
 
-    private fun processMessage(msg: String): Boolean {
-        Log.d("Model", "Processing string: $msg")
+    fun processMessage(msg: String): Boolean {
+        Log.d(_tag, "Processing string: $msg")
+        //MessageThread.postMessage("Processing string: $msg", MessageType.TOAST, messageThread.handler)
         if (msg.isNotEmpty()) {
-            val strings = msg.substring(1, msg.length - (if (msg.last() == '\n')  2 else 1)).split(',')
+            val strings = msg.substring(1, msg.length - (if (msg.last() == '\n')  1 else 0)).split(',')
             Log.d(_tag, "First char: ${msg[0]}")
 
             // System is sending us its data
@@ -129,14 +129,18 @@ class Model private constructor(owner: AppCompatActivity) {
                 try {
                     ints = strings.map { it.toInt() }.toTypedArray()
                 }catch (e: java.lang.NumberFormatException) {
-                    Log.d(_tag, "NumberFormatException while parsing string.")
+                    MessageThread.postMessage("NumberFormatException while parsing string.", MessageType.TOAST, messageThread.handler)
                     return false
                 }
-                if (ints.size != numSystemProperties)
+                if (ints.size != numSystemProperties) {
+                    MessageThread.postMessage("Received wrong number of values.", MessageType.TOAST, messageThread.handler)
                     return false
+                }
                 for (i in 0..2) {
-                    if (systemPlantList[i].pin != ints[i * 5])
+                    if (i + systemHoseOffset != ints[i * 5]) {
+                        MessageThread.postMessage("Wrong index while reading", MessageType.TOAST, messageThread.handler)
                         return false
+                    }
                     systemPlantList[i].intervalDays = ints[i * 5 + 1]
                     systemPlantList[i].amount = ints[i * 5 + 2]
                     systemPlantList[i].hourOfDay = ints[i * 5 + 3]

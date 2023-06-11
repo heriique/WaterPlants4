@@ -10,7 +10,6 @@
         android:id="@+id/layout_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="243dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:contentDescription="@string/connection_status"
-            android:src="@drawable/baseline_bluetooth_disabled_24"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside"
+            android:src="@drawable/baseline_bluetooth_disabled_24" />
     </LinearLayout>
 
     <TableLayout
@@ -90,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/system_empty" />
+                android:text="@string/system_1" />
 
             <TextView
                 android:id="@+id/text_system_next1"
@@ -130,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/system_empty" />
+                android:text="@string/system_2" />
 
             <TextView
                 android:id="@+id/text_system_next2"
@@ -170,7 +169,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/system_empty" />
+                android:text="@string/system_3" />
 
             <TextView
                 android:id="@+id/text_system_next3"

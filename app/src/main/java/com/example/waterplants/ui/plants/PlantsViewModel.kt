@@ -18,7 +18,7 @@ class PlantsViewModel : ViewModel() {
     fun savePlant(name: String?, intervalDays: Int?, amount: Int?, hourOfDay: Int?) {
         val plants = Model.getInstance(null)?.appPlants?.value!!
         if (selectedPlant.value == plants.size) {
-            val p = Plant(null, intervalDays, amount, hourOfDay, null, name, pickedImageUri.value)
+            val p = Plant(intervalDays, amount, hourOfDay, null, name, pickedImageUri.value)
             Model.getInstance(null)?.addPlant(p)
         } else {
             plants[selectedPlant.value!!].name = name
@@ -29,12 +29,6 @@ class PlantsViewModel : ViewModel() {
         }
         fieldsModified.value = false
     }
-
-    fun setPickedImageUri(uri: Uri) {
-        Model.getInstance(null)?.setPickedImage(uri)
-    }
-
-
 
     fun choosePhoto() {
         Model.getInstance(null)?.pickImage()

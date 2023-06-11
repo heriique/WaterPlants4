@@ -13,7 +13,7 @@ class SystemViewModel(application: Application) : AndroidViewModel(application) 
     private val systemPlants: LiveData<List<Plant>> = Model.getInstance(null)?.systemPlants!!
     val isConnected: LiveData<Boolean> get() {return Model.getInstance(null)?.bluetooth?.isConnected ?: MutableLiveData(false) }
 
-    val textSystemHose: LiveData<List<String>> = systemPlants.map { hoseToString(systemPlants.value!!) }
+    //val textSystemHose: LiveData<List<String>> = systemPlants.map { hoseToString(systemPlants.value!!) }
     val textSystemNext: LiveData<List<String>> = systemPlants.map { nextToString(systemPlants.value!!) }
     val textSystemAmount: LiveData<List<String>> = systemPlants.map { amountToString(systemPlants.value!!) }
     val textSystemInterval: LiveData<List<String>> = systemPlants.map {intervalToString(systemPlants.value!!)}
@@ -22,12 +22,12 @@ class SystemViewModel(application: Application) : AndroidViewModel(application) 
     private fun getString(r: Int): String {
         return getApplication<Application>().resources.getString(r)
     }
-    private fun hoseToString(plants: List<Plant>): List<String> {
+    /*private fun hoseToString(plants: List<Plant>): List<String> {
         val r = mutableListOf<String>()
             for (i in 0..2)
                 r.add("${plants[i].pin?.minus(3)}")
         return r
-    }
+    }*/
 
     private fun nextToString(plants: List<Plant>): List<String> {
         val r = mutableListOf<String>()

@@ -24,12 +24,14 @@ class MessageThread(private val owner: AppCompatActivity): Thread() {
 
     companion object {
         fun postMessage(msg: String, msgType: String, handler: Handler) {
+            Log.d("postMessage", "Posting...")
             val myMsg = handler.obtainMessage()
             val bundle = Bundle().apply {
                 putString(msgType, msg)
             }
             myMsg.data = bundle
-            handler.sendMessage(myMsg)
+            myMsg.sendToTarget()
+            //handler.sendMessage(myMsg)
         }
     }
     override fun run() {
@@ -38,25 +40,30 @@ class MessageThread(private val owner: AppCompatActivity): Thread() {
         if (looper != null) {
             handler = object : Handler(looper) {
                 override fun handleMessage(msg: Message) {
-                    val readString = msg.data.getString(MessageType.READ)
-                    val writeString = msg.data.getString(MessageType.WRITE)
-                    val pickImageString = msg.data.getString(MessageType.PICK_IMAGE)
-                    val toastString = msg.data.getString(MessageType.TOAST)
-                    if (readString != null) {
-                        Log.d(_tag, "Handling ${MessageType.READ}: $readString")
-                        Model.getInstance(null)?.processMessages(readString)
-                    }
-                    else if (writeString != null) {
-                        Log.d(_tag, "Handling ${MessageType.WRITE}: $writeString")
-                    }
-                    else if (pickImageString != null) {
-                        Log.d(_tag, "Handling ${MessageType.PICK_IMAGE}: $pickImageString")
-                        if (pickImageString!= "null")
-                            Model.getInstance(null)?.setPickedImage(Uri.parse(pickImageString))
-                    } else if (toastString != null) {
-                        Log.d(_tag, "Handling ${MessageType.TOAST}: $toastString")
-                        Toast.makeText(owner, toastString, Toast.LENGTH_SHORT).show()
-                    }
+                    super.handleMessage(msg)
+                    //do {
+                        val readString = msg.data.getString(MessageType.READ)
+                        val writeString = msg.data.getString(MessageType.WRITE)
+                        val pickImageString = msg.data.getString(MessageType.PICK_IMAGE)
+                        val toastString = msg.data.getString(MessageType.TOAST)
+                        if (readString != null) {
+                            Log.d(_tag, "Handling ${MessageType.READ}: $readString")
+                            Model.getInstance(null)?.processMessage(readString)
+                        }
+                        if (writeString != null) {
+                            Log.d(_tag, "Handling ${MessageType.WRITE}: $writeString")
+                            Model.getInstance(null)?.bluetooth?.writeData(writeString)
+                        }
+                        if (pickImageString != null) {
+                            Log.d(_tag, "Handling ${MessageType.PICK_IMAGE}: $pickImageString")
+                            if (pickImageString != "null")
+                                Model.getInstance(null)?.setPickedImage(Uri.parse(pickImageString))
+                        }
+                        if (toastString != null) {
+                            Log.d(_tag, "Handling ${MessageType.TOAST}: $toastString")
+                            Toast.makeText(owner, toastString, Toast.LENGTH_SHORT).show()
+                        }
+                    //} while (readString != null || writeString != null || pickImageString != null || toastString != null)
 
                 }
             }

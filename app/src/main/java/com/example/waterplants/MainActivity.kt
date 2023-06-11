@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d("PhotoPicker", "No media selected")
                 }
                 // Send the obtained bytes to the message handler.
-                val pickImageMsg = model.getHandler().obtainMessage()
+                val pickImageMsg = model.getMessageHandler().obtainMessage()
                 val bundle = Bundle().apply { putString(
                     MessageType.PICK_IMAGE,
                     uri.toString()) }

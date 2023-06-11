@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.example.waterplants.databinding.FragmentTestBinding
+import com.example.waterplants.model.MessageThread
+import com.example.waterplants.model.MessageType
+import com.example.waterplants.model.Model
 
 class TestFragment : Fragment() {
 
@@ -28,10 +30,21 @@ class TestFragment : Fragment() {
         _binding = FragmentTestBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textTest
-        testViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        binding.buttonTest1.setOnClickListener {
+            val handler = Model.getInstance(null)?.getMessageHandler()!!
+            MessageThread.postMessage("b4,1,211,10,0,5,1,222,11,0,6,1,233,12,1\n", MessageType.WRITE, handler)
         }
+
+        binding.buttonTest2.setOnClickListener {
+            val handler = Model.getInstance(null)?.getMessageHandler()!!
+            MessageThread.postMessage("t2", MessageType.WRITE, handler)
+        }
+
+        binding.buttonTest3.setOnClickListener {
+            val handler = Model.getInstance(null)?.getMessageHandler()!!
+            MessageThread.postMessage("t3", MessageType.WRITE, handler)
+        }
+
         return root
     }
 

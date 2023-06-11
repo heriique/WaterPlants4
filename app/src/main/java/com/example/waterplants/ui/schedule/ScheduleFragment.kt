@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.waterplants.R
 import com.example.waterplants.databinding.FragmentScheduleBinding
 import com.example.waterplants.model.Model
 
@@ -26,18 +27,16 @@ class ScheduleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val scheduleViewModel =
-            ViewModelProvider(this).get(ScheduleViewModel::class.java)
+            ViewModelProvider(this)[ScheduleViewModel::class.java]
 
         _binding = FragmentScheduleBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-
 
         val gridView = binding.gridViewSchedule
         val tileAdapter = TileAdapter(this.requireContext(), Model.getInstance(null)!!.appPlants,
             Model.getInstance(null)!!.appChosenPlants, scheduleViewModel.selectedHose)
         gridView.adapter = tileAdapter
-        gridView.setOnItemClickListener{adapterView, parent, position, l->
+        gridView.setOnItemClickListener{ _, _, position, _ ->
             run {
                 Toast.makeText(this.requireContext(), "Click on $position", Toast.LENGTH_SHORT)
                     .show()
@@ -69,6 +68,16 @@ class ScheduleFragment : Fragment() {
 
         binding.buttonScheduleSend.setOnClickListener {
             scheduleViewModel.write()
+        }
+
+        scheduleViewModel.isConnected.observe(viewLifecycleOwner) {
+            binding.buttonScheduleSend.isEnabled = it
+            if (it == false) {
+                binding.imageSchedule.setImageResource(R.drawable.baseline_bluetooth_disabled_24)
+            }
+            else {
+                binding.imageSchedule.setImageResource(R.drawable.baseline_bluetooth_connected_24)
+            }
         }
 
         return root

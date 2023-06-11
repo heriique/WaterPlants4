@@ -20,7 +20,7 @@ class TileAdapter2(var context: Context, private var plants: LiveData<List<Plant
 
     override fun getItem(position: Int): Any {
         if (position == plants.value!!.size)
-            return Plant(null, null, null, null, null, "New Plant...", null)
+            return Plant(null, null, null, null, "New Plant...", null)
         return (plants.value!![position])
     }
 

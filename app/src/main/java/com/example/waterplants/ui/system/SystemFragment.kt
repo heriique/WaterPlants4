@@ -37,12 +37,6 @@ class SystemFragment : Fragment() {
             binding.textSystemWaterLevel.text = "${getString(R.string.system_water_level)} $it %"
         }
 
-        systemViewModel.textSystemHose.observe(viewLifecycleOwner) {
-            binding.textSystemHose1.text = it[0]
-            binding.textSystemHose2.text = it[1]
-            binding.textSystemHose3.text = it[2]
-        }
-
         systemViewModel.textSystemNext.observe(viewLifecycleOwner) {
             binding.textSystemNext1.text = it[0]
             binding.textSystemNext2.text = it[1]

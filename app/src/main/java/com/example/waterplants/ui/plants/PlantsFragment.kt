@@ -112,7 +112,6 @@ class PlantsFragment : Fragment() {
 
         binding.imagePlantsPlant.setOnClickListener {
             plantsViewModel.choosePhoto()
-            //checkFieldsModified()
         }
 
         class MyTextWatcher:TextWatcher {
@@ -137,7 +136,6 @@ class PlantsFragment : Fragment() {
 
         return root
     }
-
 
     private fun select(position: Int) {
         val plants = Model.getInstance(null)!!.appPlants.value!!

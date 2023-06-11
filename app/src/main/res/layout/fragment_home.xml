@@ -10,7 +10,6 @@
         android:id="@+id/layout_linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="243dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/button_connect"
         app:layout_constraintEnd_toEndOf="parent"
